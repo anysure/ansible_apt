@@ -14,11 +14,28 @@
     access_time: preserve
   become: true
 
-- name: Comment out all sources in default sources.list file
-  ansible.builtin.replace:
+- name: Check the sources.list file
+- name: "Searching for a String"
+  lineinfile:
     path: /etc/apt/sources.list
-    regexp: '^\s*(deb.*)'
-    replace: '# Ansible managed # \1'
+    line: "This file is created by Ansible Tower, any manual modifications will be destroyed"
+    state: present
+  check_mode: yes
+  register: presence
+  become: true
+
+- name: Remove sources.list file
+  ansible.builtin.file:
+    path: /etc/apt/sources.list
+    state: absent
+  when: presence is changed
+  become: true
+
+- name: Create new sources.list file
+  ansible.builtin.file:
+    path: /etc/apt/sources.list
+    state: touch
+  when: presence is changed
   become: true
 
 - name: Configure base APT repositories
