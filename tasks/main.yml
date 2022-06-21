@@ -4,46 +4,14 @@
   include_vars: "{{ ansible_facts.distribution }}.yml"
 
 - name: Make sure the default sources.lists file exists
-  ansible.builtin.file:
+  ansible.builtin.template:
+    src: etc/apt/sources.list.j2
     path: /etc/apt/sources.list
     owner: root
     group: root
     mode: 0644
-    state: touch
     modification_time: preserve
     access_time: preserve
-  become: true
-
-- name: Check the sources.list file
-  lineinfile:
-    path: /etc/apt/sources.list
-    line: "This file is created by Ansible Tower, any manual modifications will be destroyed"
-    state: present
-  check_mode: yes
-  register: presence
-  become: true
-
-- name: Remove sources.list file
-  ansible.builtin.file:
-    path: /etc/apt/sources.list
-    state: absent
-  when: presence is changed
-  become: true
-
-- name: Create new sources.list file
-  ansible.builtin.file:
-    path: /etc/apt/sources.list
-    state: touch
-  when: presence is changed
-  become: true
-
-- name: Configure base APT repositories
-  ansible.builtin.apt_repository:
-    filename: /etc/apt/sources.list
-    update_cache: '{{ apt_update_cache }}'
-    repo: '{{ item.repo }}'
-    state: '{{ item.state }}'
-  with_items: '{{ apt_base_repositories + apt_aditional_repositories  }}'
   become: true
 
 - name: Install packages
