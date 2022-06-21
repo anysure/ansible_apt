@@ -1,2 +1,48 @@
 ---
 # tasks file for ansible_apt
+- name: Include distribution specific variables
+  include_vars: "{{ ansible_facts.distribution }}.yml"
+
+- name: Make sure the default sources.lists file exists
+  ansible.builtin.file:
+    path: /etc/apt/sources.list
+    owner: root
+    group: root
+    mode: 0644
+    state: touch
+    modification_time: preserve
+    access_time: preserve
+  become: true
+
+- name: Comment out all sources in default sources.list file
+  ansible.builtin.replace:
+    path: /etc/apt/sources.list
+    regexp: '^\s*(deb.*)'
+    replace: '# Ansible managed # \1'
+  become: true
+
+- name: Configure base APT repositories
+  ansible.builtin.apt_repository:
+    filename: '{{ apt_repository_filename }}'
+    update_cache: '{{ apt_update_cache }}'
+    repo: '{{ item.repo }}'
+    state: '{{ item.state }}'
+  with_items: '{{ apt_base_repositories + apt_aditional_repositories  }}'
+  become: true
+
+- name: Install packages
+  ansible.builtin.apt:
+    name: "{{ apt_base_packages + apt_aditional_packages }}"
+    state: "{{ apt_install_state | default('present') }}"
+  become: true
+
+- name: Upgrade packages
+  ansible.builtin.apt:
+    update_cache: '{{ apt_update_cache }}'
+    upgrade: '{{ apt_upgrade }}'
+    autoclean: '{{ apt_autoclean }}'
+    autoremove: '{{ apt_autoremove }}'
+    force_apt_get: '{{ apt_force_apt_get }}'
+  become: true
+
+

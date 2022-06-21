@@ -1,22 +1,34 @@
 ansible_apt
-=========
+===========
 
-This is the AnySURE role ansible_apt.
+This is the AnySURE role ansible_apt. It configures the APT repositiry's on a Debian system. Installs and upgrades packages.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+none
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Variable | default | options | description |
+|----------|---------|---------|-------------|
+| apt_install_recommends | yes | yes/no | no to disable recommended packages install. |
+| apt_update_cache | yes | yes/no | no to update apt cache before installing/upgrading. |
+| apt_force_apt_get | yes | yes/no| no to use apt-get / aptitude for package management.| 
+| apt_upgrade | yes| yes/no | yes to upgrade your system automatically. |
+| apt_autoclean | yes | yes/no | yes to autoclean apt-get/aptitude cache (remove outdated downloaded deb files). |
+| apt_autoremove | yes| yes/no | yes to automatically uninstall unneeded dependencies installed by removed packages. | 
+| apt_base_packages | a base list | *list* | List of basic packages to install on your system.  | 
+| apt_aditional_packages | *none* | *list* | List of aditional packages to install on your system.  | 
+| apt_base_repositories | a base repo list | *list* | List of repositories to add. WARNING! Removes everything else. Add ALL your repos before using it! Defaults to the default repos of Debian and Ubuntu based on your distribution and its version. |
+| apt_aditional_repositories | *none* | *list* | List of repositories to add. |
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
