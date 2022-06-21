@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include anysure.ansible_apt"
+      include_role:
+        name: "anysure.ansible_apt"

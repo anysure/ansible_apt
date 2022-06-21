@@ -1,0 +1,21 @@
+galaxy_info:
+  author: Ronny Roethof <ronny.roethof@anylinq.com>
+  namespace: anysure
+  description: ansible_apt
+  company: AnyLinQ B.V.
+  issue_tracker_url: https://github.com/anysure/ansible_apt/issues
+
+  license: Apache
+  min_ansible_version: 2.1
+
+  platforms:
+  - name: EL
+    versions:
+    - 8
+  - name: Debian
+    versions:
+    - bullseye
+
+  galaxy_tags: []
+
+dependencies: []
