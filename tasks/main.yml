@@ -6,7 +6,7 @@
 - name: Make sure the default sources.lists file exists
   ansible.builtin.template:
     src: etc/apt/sources.list.j2
-    path: /etc/apt/sources.list
+    dest: /etc/apt/sources.list
     owner: root
     group: root
     mode: 0644
