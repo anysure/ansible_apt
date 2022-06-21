@@ -15,7 +15,6 @@
   become: true
 
 - name: Check the sources.list file
-- name: "Searching for a String"
   lineinfile:
     path: /etc/apt/sources.list
     line: "This file is created by Ansible Tower, any manual modifications will be destroyed"
