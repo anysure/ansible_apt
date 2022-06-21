@@ -39,7 +39,7 @@
 
 - name: Configure base APT repositories
   ansible.builtin.apt_repository:
-    filename: '{{ apt_repository_filename }}'
+    filename: /etc/apt/sources.list
     update_cache: '{{ apt_update_cache }}'
     repo: '{{ item.repo }}'
     state: '{{ item.state }}'
