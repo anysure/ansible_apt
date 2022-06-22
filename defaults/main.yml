@@ -1,15 +1,16 @@
 ---
 # defaults file for ansible_apt
-apt_install_recommends: 1
-apt_install_suggests: 1
+apt_install_recommends: true
+apt_install_suggests: true
+apt_install_unattended_upgrades: true
 
 apt_templates_dest_path: "/etc/apt"
 apt_templates_src_path: "{{ role_path }}/templates"
 
-apt_periodic_update_package_lists: 1
-apt_periodic_download_upgradeable_packages: 1
+apt_periodic_update_package_lists: true
+apt_periodic_download_upgradeable_packages: true
 apt_periodic_autoclean_interval: 7
-apt_periodic_unattended_upgrade: 1
+apt_periodic_unattended_upgrade: true
 
 apt_update_cache: false
 apt_force_apt_get: true
