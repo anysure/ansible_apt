@@ -3,14 +3,24 @@
 - name: Include distribution specific variables
   include_vars: "{{ ansible_facts.distribution }}.yml"
 
-- name: Configure apt
+- name: Configure apt conf.d
   template:
     src: "etc/apt/apt.conf.d/{{ item }}"
-    dest: "/etc/apt/apt.conf.d/{{ item | basename | regex_replace('\.j2$', '') }}"
+    dest: "/etc/apt/apt.conf.d/{{ item | basename | regex_replace('.j2', '') }}"
     owner: root
     group: root
     mode: 0644
-  with_fileglob: 'etc/apt/conf.d/*.j2'
+  with_fileglob: '../templates/etc/apt/apt.conf.d/*.j2'
+  become: true
+
+- name: Configure apt preferences
+  template:
+    src: "etc/apt/preferences.d/{{ item }}"
+    dest: "/etc/apt/preferences.d/{{ item | basename | regex_replace('.j2', '') }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_fileglob: '../templates/etc/apt/preferences.d/*.j2'
   become: true
 
 - name: Configure apt preferences
