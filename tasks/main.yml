@@ -3,6 +3,16 @@
 - name: Include distribution specific variables
   include_vars: "{{ ansible_facts.distribution }}.yml"
 
+- name: cCopy templates files recursively
+  template: 
+    src: "{{ item }}"
+    dest: "{{ apt_templates_dest_path }}/{{ item|replace(apt_templates_src_path+'/', '')|replace('.j2', '') }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ lookup('pipe', 'find '+ apt_templates_src_path +'/*.j2 -type f').split('\n') }}"
+  become: true
+
 - name: Configure apt conf.d
   template:
     src: "etc/apt/apt.conf.d/{{ item }}"

@@ -3,6 +3,9 @@
 apt_install_recommends: 1
 apt_install_suggests: 1
 
+apt_templates_dest_path: "/etc/apt"
+apt_templates_src_path: "{{ role_path }}/templates"
+
 apt_periodic_update_package_lists: 1
 apt_periodic_download_upgradeable_packages: 1
 apt_periodic_autoclean_interval: 7
