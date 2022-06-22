@@ -4,24 +4,24 @@
   include_vars: "{{ ansible_facts.distribution }}.yml"
 
 - name: Create custom configuration directories
-  file:
+  ansible.builtin.file:
     path: /etc/apt/{{ item.path }}
     state: directory
     owner: root
     group: root
     mode: 0755
-  with_filetree: templates/
+  with_community.general.filetree: templates/
   when: item.state == 'directory'
   become: true
 
 - name: Copy custom configuration files
-  template:
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: /etc/apt
     owner: root
     group: root
     mode: 0644
-  with_filetree: templates/
+  with_community.general.filetree: templates/
   when: item.state == "file"
   become: true
 
