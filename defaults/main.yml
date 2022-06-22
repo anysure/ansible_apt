@@ -2,7 +2,10 @@
 # defaults file for ansible_apt
 apt_install_recommends: true
 apt_install_suggests: true
+
 apt_install_unattended_upgrades: true
+apt_unattended_upgrades_packages:
+  - unattended-upgrades
 
 apt_templates_dest_path: "/etc/apt"
 apt_templates_src_path: "{{ role_path }}/templates"
