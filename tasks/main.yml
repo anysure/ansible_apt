@@ -3,6 +3,26 @@
 - name: Include distribution specific variables
   include_vars: "{{ ansible_facts.distribution }}.yml"
 
+- name: Configure apt
+  template:
+    src: "etc/apt/apt.conf.d/{{ item }}"
+    dest: "/etc/apt/apt.conf.d/{{ item | basename | regex_replace('\.j2$', '') }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_fileglob: 'etc/apt/conf.d/*.j2'
+  become: true
+
+- name: Configure apt preferences
+  template:
+    src: etc/apt/preferences.d/99preferences.j2
+    dest: /etc/apt/preferences.d/99preferences
+    owner: root
+    group: root
+    mode: 0644
+  when: apt_preferences | length > 0
+  become: true
+
 - name: Make sure the default sources.lists file exists
   ansible.builtin.template:
     src: etc/apt/sources.list.j2
@@ -14,7 +34,7 @@
 
 - name: Install packages
   ansible.builtin.apt:
-    name: "{{ apt_base_packages + apt_aditional_packages }}"
+    name: "{{ apt_required_packages + apt_base_packages + apt_aditional_packages }}"
     state: "{{ apt_install_state | default('present') }}"
   become: true
 
@@ -27,4 +47,21 @@
     force_apt_get: '{{ apt_force_apt_get }}'
   become: true
 
+- name: Install unattended-upgrades
+  apt:
+    name: "{{ apt_unattended_upgrades_packages }}"
+    state: present
+  when: apt_install_unattended_upgrades
+  become: true
 
+- name: Configure unattended-upgrades
+  template:
+    src: "etc/apt/apt.conf.d/{{ item }}.j2"
+    dest: "/etc/apt/apt.conf.d/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - 20auto_upgrades
+    - 50unattended-upgrades
+  become: true

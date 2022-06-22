@@ -1,22 +1,46 @@
 ---
 # defaults file for ansible_apt
-apt_install_recommends: 'yes'
-apt_update_cache: 'no'
-apt_force_apt_get: 'yes'
-apt_upgrade: 'yes'
-apt_autoclean: 'yes'
-apt_autoremove: 'yes'
+apt_install_recommends: true
+apt_update_cache: false
+apt_force_apt_get: true
+apt_upgrade: true
+apt_autoclean: true
+apt_autoremove: true
 
-apt_base_packages:
+apt_periodic_update_package_lists: true
+apt_periodic_download_upgradeable_packages: true
+apt_periodic_autoclean_interval: true
+apt_periodic_unattended_upgrade: true
+
+apt_unattended_upgrade_origins_patterns:
+  - "${distro_id} ${distro_codename}-security"
+  - "${distro_id} ${distro_codename}-updates"
+apt_unattended_upgrade_package_blacklist: []
+apt_unattended_upgrade_auto_fix_interrupted_dpkg: false
+apt_unattended_upgrade_minimal_steps: true
+apt_unattended_upgrade_install_on_shutdown: false
+apt_unattended_upgrade_mail: []
+apt_unattended_upgrade_mail_only_on_error: false
+apt_unattended_upgrade_remove_unused_kernel_packages: true
+apt_unattended_upgrade_remove_unused_dependencies: true
+apt_unattended_upgrade_automatic_reboot: true
+apt_unattended_upgrade_automatic_reboot_with_users: false
+apt_unattended_upgrade_automatic_reboot_time: now
+apt_unattended_upgrade_syslog_enable: false
+apt_unattended_upgrade_syslog_facility: daemon
+
+apt_required_packages:
   - 'lsb-release'
   - 'apt-transport-https'
   - 'ca-certificates'
 
+apt_base_packages: []
+
 apt_aditional_packages: []
 
 apt_base_repositories:
-  - repo: 'deb {{ __apt_main_uri }} {{ ansible_facts.distribution_release }} {{ __apt_stores }}'
-  - repo: 'deb {{ __apt_updates_uri }} {{ ansible_facts.distribution_release }}{{ __apt_updates_repo }} {{ __apt_stores }}'
-  - repo: 'deb {{ __apt_security_uri }} {{ ansible_facts.distribution_release }}{{ __apt_security_repo }} {{ __apt_stores }}'
+  - 'http://deb.debian.org/debian bullseye main contrib non-free'
+  - 'http://deb.debian.org/debian bullseye-updates main contrib non-free'
+  - 'http://security.debian.org/debian-security bullseye-security main contrib non-free'
 
 apt_aditional_repositories: []

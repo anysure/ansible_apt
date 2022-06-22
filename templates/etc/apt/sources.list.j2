@@ -1,9 +1,11 @@
 # {{ ansible_managed }}
 
+# Base repositories
 {% for item in apt_base_repositories %}
-{{ item.repo }}
+deb {{ item }}
 {% endfor %}
 
+# Aditional repositories
 {% for item in apt_aditional_repositories %}
-{{ item.repo }}
+deb {{ item }}
 {% endfor %}
