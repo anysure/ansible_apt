@@ -1,16 +1,18 @@
 ---
 # defaults file for ansible_apt
-apt_install_recommends: true
+apt_install_recommends: 1
+apt_install_suggests: 1
+
+apt_periodic_update_package_lists: 1
+apt_periodic_download_upgradeable_packages: 1
+apt_periodic_autoclean_interval: 7
+apt_periodic_unattended_upgrade: 1
+
 apt_update_cache: false
 apt_force_apt_get: true
 apt_upgrade: true
 apt_autoclean: true
 apt_autoremove: true
-
-apt_periodic_update_package_lists: true
-apt_periodic_download_upgradeable_packages: true
-apt_periodic_autoclean_interval: true
-apt_periodic_unattended_upgrade: true
 
 apt_unattended_upgrade_origins_patterns:
   - "${distro_id} ${distro_codename}-security"

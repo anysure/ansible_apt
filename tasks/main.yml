@@ -23,16 +23,6 @@
   with_fileglob: '../templates/etc/apt/preferences.d/*.j2'
   become: true
 
-- name: Configure apt preferences
-  template:
-    src: etc/apt/preferences.d/99preferences.j2
-    dest: /etc/apt/preferences.d/99preferences
-    owner: root
-    group: root
-    mode: 0644
-  when: apt_preferences | length > 0
-  become: true
-
 - name: Make sure the default sources.lists file exists
   ansible.builtin.template:
     src: etc/apt/sources.list.j2
